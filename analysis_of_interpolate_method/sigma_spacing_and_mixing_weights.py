@@ -37,6 +37,12 @@ def sigma_space(spacing):
         upper_mix[i] = mixu
 
     rms_mean = np.mean(rms_save)
+
+    # plt.figure()
+    # plt.plot(sigma_values, lower_mix)
+    # plt.plot(sigma_values, upper_mix)
+    # plt.title('Sigma Value vs Upper and Lower Mixing Weights')
+
     return rms_mean, lower_mix, upper_mix
 
 rms_mean, lower_mix, upper_mix = sigma_space(np.sqrt(2))
