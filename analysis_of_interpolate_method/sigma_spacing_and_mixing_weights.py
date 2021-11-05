@@ -14,12 +14,12 @@ def sigma_space(spacing):
     sigma_min = 1
     sigma_max = spacing
 
-    def gaussian_mix(x, w1, w2):
+    def gaussian_mix(x, w1):
         #Return a linear combination of two Gaussians with weights
         return (w1 * gaussian(x, sigma=sigma_min)
-                + w2 * gaussian(x, sigma=sigma_max))
+                + (1-w1) * gaussian(x, sigma=sigma_max))
 
-    sigma_values = np.linspace(sigma_min, sigma_max, 101)
+    sigma_values = np.linspace(sigma_min, sigma_max, 51)
     x = np.linspace(-10, 50, 101)
 
     rms_save = np.zeros(len(sigma_values))
@@ -28,15 +28,24 @@ def sigma_space(spacing):
 
     for i, sigma in enumerate(sigma_values):
         actual_gaussian = gaussian(x, sigma)
-        (mixl, mixu), _ = curve_fit(gaussian_mix, x, ydata=actual_gaussian, p0=[0.5, 0.5])
+        mixl, _ = curve_fit(gaussian_mix, x, ydata=actual_gaussian, p0=[0.5],bounds=(0,1))
 
-        est_gaussian = gaussian_mix(x, mixl, mixu)
+        mixl=mixl[0]
+        mixu=1-mixl
+
+        est_gaussian = gaussian_mix(x, mixl)
         rms_save[i] = np.sqrt(np.mean((actual_gaussian-est_gaussian)**2))
 
         lower_mix[i] = mixl
         upper_mix[i] = mixu
 
     rms_mean = np.mean(rms_save)
+
+    # plt.figure()
+    # plt.plot(sigma_values, lower_mix)
+    # plt.plot(sigma_values, upper_mix)
+    # plt.title('Sigma Value vs Upper and Lower Mixing Weights')
+
     return rms_mean, lower_mix, upper_mix
 
 rms_mean, lower_mix, upper_mix = sigma_space(np.sqrt(2))
@@ -45,7 +54,7 @@ rms_mean, lower_mix, upper_mix = sigma_space(np.sqrt(2))
 Investigate which degree polynomial provides best fit to mixing weights
 """
 
-X = np.linspace(1, np.sqrt(2), 101).reshape(101, 1)
+X = np.linspace(1, np.sqrt(2), 51).reshape(51, 1)
 y = lower_mix
 
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
@@ -70,12 +79,12 @@ for deg in degrees:
     poly_mse = mean_squared_error(y_test, poly_predict)
     poly_rmse = np.sqrt(poly_mse)
     rmses.append(poly_rmse)
-    
+
     # Cross-validation of degree
     if min_rmse > poly_rmse:
         min_rmse = poly_rmse
         min_deg = deg
-        
+
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.plot(degrees, rmses)
@@ -83,11 +92,13 @@ ax.set_yscale('log')
 ax.set_xlabel('Degree')
 ax.set_ylabel('RMSE')
 
+plt.show()
+
 """
 Over a range of sigma_spacing values, determine relationship between
 spacing and rmse & spacing and number of kernels required
 """
- 
+
 spaces = np.arange(1.1,1.5,0.01)
 rms_space = []
 n_kernels = []
