@@ -14396,7 +14396,7 @@ with the approximated Gaussian equalling $G(x;\sigma) = w_1 G(x;\sigma_{min}) + 
 
 <span class="n">area_fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">save_space</span><span class="p">,</span> <span class="n">save_area1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">save_space</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">area_fit</span><span class="p">,</span> <span class="n">save_space</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">)</span>
 
 <span class="c1">#area2_fit = np.polyfit(save_space, save_area2, 3)</span>
 <span class="c1">#ax2.plot(save_space, np.polyval(area2_fit, save_space), color=&#39;C2&#39;)</span>
@@ -14457,7 +14457,7 @@ with the approximated Gaussian equalling $G(x;\sigma) = w_1 G(x;\sigma_{min}) + 
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Fitting a cubic polynoimal to the inverse of the above accuracy plot provides a function which allows an appropriate spacing value to be calculated given a desired level of accuracy.</p>
+<p>Fitting a cubic polynoimal to the inverse of the above error plot provides a function which allows an appropriate spacing value to be calculated given a desired level of accuracy.</p>
 <p>$spacing = 656.1*e^3 - 131.8*e^2 + 15.98*e + 1.0803$</p>
 <p>For example, if a user would like an accuracy level of 5% (e=0.05), this corresponds to a sigma spacing value of 1.63. As the sigma spacing approaches 1, the error approaches zero. However, the computational cost also increases as the sigma spacing value decreases. The above plot illustrates how the number of kernels required to be evaluated exactly scales with the sigma spacing value, highlighting how the improved accuracy comes with the cost of decreased efficiency.</p>
 
