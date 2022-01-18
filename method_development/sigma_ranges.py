@@ -3,6 +3,7 @@ from euphonic.cli.utils import (load_data_from_file, _grid_spec_from_args, _get_
 from euphonic.util import mp_grid, mode_gradients_to_widths
 from euphonic import ureg
 import matplotlib.pyplot as plt
+import os
 
 """
 Script that produces violin plots of the sigma values associated with different data sets.
@@ -16,8 +17,11 @@ to skip over some values.
 
 filenames = ['mp-661-20180417.yaml', 'mp-917-20180417.yaml']
 
+file_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(file_dir)
+
 for filename in filenames:
-    data = load_data_from_file('/home/jessfarmer/Broadening_Methods/Data/'+filename)
+    data = load_data_from_file(parent_dir+'/Data/'+filename)
 
     recip_length_unit = ureg('1 /angstrom')
     grid_spec = _grid_spec_from_args(data.crystal, grid=None,
